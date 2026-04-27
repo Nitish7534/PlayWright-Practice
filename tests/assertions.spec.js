@@ -3,6 +3,7 @@ import { test, expect } from '@playwright/test';
 test('Assertions Demo Test', async ({ page }) => {
 
     await page.goto('https://kitchen.applitools.com/');
+    await page.pause(); // Pause the test execution to inspect the page
 
     await expect(page.locator('text=The Kitchen')).toHaveCount(1);
     await expect(page.locator('text=The Kitchen')).toBeVisible();
@@ -20,7 +21,7 @@ test('Assertions Demo Test', async ({ page }) => {
 
     //FIXED LINE ONLY
     //await expect(page.locator('.balance').first()).toContainText('$');
-
-    await expect(page).toHaveScreenshot();
+    await expect(page.locator('text=The Kitchen')).toBeVisible();
+await expect(page).toHaveScreenshot();
 
 });
