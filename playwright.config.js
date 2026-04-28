@@ -2,39 +2,51 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
-
-/**
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
+
+  timeout: 30000, // Global timeout for each test (30 sec)
+
   testDir: './tests',
-  /* Run tests in files in parallel */
-  fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
+
+  // Run tests in parallel
+  fullyParallel: true, // Run all tests in parallel
+
+  // Fail build if test.only is left in code (CI safety)
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
+
+  // Retry only in CI
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
+
+  // Use single worker in CI
   workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+
+  // Reporter
   reporter: 'html',
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+
+  // Shared settings for all tests
   use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
+
+    // Base URL (optional)
     // baseURL: 'http://localhost:3000',
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    // 🎥 Record video on failure
+    video: 'retain-on-failure',
+
+    // 🐢 Slow down execution
+    launchOptions: {
+      slowMo: 1000,
+    },
+
+    // 🔍 Trace on retry
     trace: 'on-first-retry',
+   baseURL: 'https://www.saucedemo.com/',
   },
 
-  /* Configure projects for major browsers */
+  // Cross-browser configuration
   projects: [
+
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
@@ -50,7 +62,7 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
     },
 
-    /* Test against mobile viewports. */
+    // Mobile testing (optional)
     // {
     //   name: 'Mobile Chrome',
     //   use: { ...devices['Pixel 5'] },
@@ -60,7 +72,7 @@ export default defineConfig({
     //   use: { ...devices['iPhone 12'] },
     // },
 
-    /* Test against branded browsers. */
+    // Branded browsers (optional)
     // {
     //   name: 'Microsoft Edge',
     //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
@@ -71,11 +83,11 @@ export default defineConfig({
     // },
   ],
 
-  /* Run your local dev server before starting the tests */
+  // Local dev server (optional)
   // webServer: {
   //   command: 'npm run start',
   //   url: 'http://localhost:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
-});
 
+});

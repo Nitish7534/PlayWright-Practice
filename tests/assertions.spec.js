@@ -15,7 +15,6 @@ test('Assertions Demo Test', async ({ page }) => {
     await expect(page.locator('text=The Kitchen')).not.toHaveText('ABCD');
 
     await page.screenshot({ path: 'screenshot.png' });
-
     await expect(page).toHaveURL(/kitchen.applitools.com/);
     await expect(page).toHaveTitle(/Kitchen/);
 
